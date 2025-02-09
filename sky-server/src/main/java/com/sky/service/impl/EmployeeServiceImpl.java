@@ -1,16 +1,21 @@
 package com.sky.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.BCryptUtil;
@@ -76,7 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         BeanUtils.copyProperties(employeeDTO, employee);
         employee.setStatus(StatusConstant.ENABLE);
 
-        //设置密码,默认123456,以后添加修改密码业务
+        //TODO 设置密码,默认123456,以后添加修改密码业务
         String pwd = DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes());
         employee.setPassword(pwd);
 
@@ -93,6 +98,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         //插入用户
         employeeMapper.insert(employee);
 
+    }
+    /**
+     * 分页操作
+     * @param queryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO queryDTO) {
+        // 构造分页对象
+        Page<Employee> page = new Page<>(queryDTO.getPage(), queryDTO.getPageSize());
+
+        // 构造查询条件
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(queryDTO.getName() != null && !queryDTO.getName().isEmpty(), Employee::getName, queryDTO.getName())
+                .orderByDesc(Employee::getCreateTime);
+
+        // 执行分页查询
+        IPage<Employee> employeePage = employeeMapper.selectPage(page, queryWrapper);
+
+        // 封装结果并返回
+        return new PageResult(employeePage.getTotal(), employeePage.getRecords());
     }
 
 }
