@@ -76,6 +76,7 @@ public class EmployeeController {
      */
     @ApiOperation("员工分页查询")
     @GetMapping("/page")
+    //对于查询的接口,建议写泛型
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
         log.info("员工分页查询,参数为: {}", employeePageQueryDTO);
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
@@ -101,6 +102,13 @@ public class EmployeeController {
     @ApiOperation(value = "员工登出")
     @PostMapping("/logout")
     public Result<String> logout() {
+        return Result.success();
+    }
+    @ApiOperation(value = "修改员工状态")
+    @PostMapping("/status/{status}")
+    public Result startOrstop(@PathVariable Integer status,Long id ) {
+        log.info("启用禁用员工账号: {},{}",status,id);
+        employeeService.startOrstop(status,id);
         return Result.success();
     }
 }
