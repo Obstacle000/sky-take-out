@@ -136,9 +136,46 @@ public class EmployeeServiceImpl implements EmployeeService {
         // employee.setUpdateTime(LocalDateTime.now());
         Long currentId = BaseContext.getCurrentId();
         employee.setUpdateUser(currentId);
+
         LambdaQueryWrapper<Employee> lqw=new LambdaQueryWrapper<Employee>();
         lqw.eq(Employee::getId,id);
+
         employeeMapper.update(employee,lqw);
+    }
+
+    /**
+     * 根据id查询对象
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.selectById(id);
+
+        //密码不准看
+        employee.setPassword("****");
+        return employee;
+    }
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     */
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+
+
+
+        //注意1:由于BaseMapper的泛型是employee,所以得进行转换,用copy
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        //注意2:LambdaQueryWrapper的泛型不能写DTO了,不然最后update传递不了lqw
+        LambdaQueryWrapper<Employee> lqw=new LambdaQueryWrapper<>();
+        lqw.eq(Employee::getId,employee.getId());
+
+        employeeMapper.update(employee,lqw);
+
     }
 
 }

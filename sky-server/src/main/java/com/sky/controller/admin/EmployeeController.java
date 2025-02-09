@@ -94,6 +94,76 @@ public class EmployeeController {
         employeeService.save(employeeDTO);
         return Result.success();
     }
+
+    /**
+     * 启用禁用员工
+     * @param status
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "修改员工状态")
+    @PostMapping("/status/{status}")
+    public Result startOrstop(@PathVariable Integer status,Long id ) {
+        log.info("启用禁用员工账号: {},{}",status,id);
+        employeeService.startOrstop(status,id);
+        return Result.success();
+    }
+
+    /**
+     * 修改员工时回显
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "修改员工时回显")
+    @GetMapping("/{id}")
+    public Result<Employee> getById( @PathVariable Long id) {
+        Employee employee = employeeService.getById(id);
+
+        return Result.success(employee);
+    }
+
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     * @return
+     */
+    @ApiOperation("编辑员工信息")
+    @PutMapping//更新用put.新增时post
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("编辑员工信息");
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * 退出
      *
@@ -102,13 +172,6 @@ public class EmployeeController {
     @ApiOperation(value = "员工登出")
     @PostMapping("/logout")
     public Result<String> logout() {
-        return Result.success();
-    }
-    @ApiOperation(value = "修改员工状态")
-    @PostMapping("/status/{status}")
-    public Result startOrstop(@PathVariable Integer status,Long id ) {
-        log.info("启用禁用员工账号: {},{}",status,id);
-        employeeService.startOrstop(status,id);
         return Result.success();
     }
 }
