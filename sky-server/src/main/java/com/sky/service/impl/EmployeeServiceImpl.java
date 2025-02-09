@@ -121,4 +121,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(employeePage.getTotal(), employeePage.getRecords());
     }
 
+    /**
+     * 修改员工状态
+     * @param status
+     * @param id
+     */
+    public void startOrstop(Integer status, Long id) {
+        //build风格创建对象
+        Employee employee=Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+
+        // employee.setUpdateTime(LocalDateTime.now());
+        Long currentId = BaseContext.getCurrentId();
+        employee.setUpdateUser(currentId);
+        LambdaQueryWrapper<Employee> lqw=new LambdaQueryWrapper<Employee>();
+        lqw.eq(Employee::getId,id);
+        employeeMapper.update(employee,lqw);
+    }
+
 }
