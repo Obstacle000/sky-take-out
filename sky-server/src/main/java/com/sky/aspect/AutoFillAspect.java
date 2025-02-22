@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Aspect
 @Component
 @Slf4j
-@Deprecated//被全局自动填充替代了
+@Deprecated//被mp自动填充替代了
 public class AutoFillAspect {
     @Pointcut("execution(* com.sky.mapper.*.*(..)) && @annotation(com.sky.annotation.AutoFill )")
     public void autoFillPointCut(){}
