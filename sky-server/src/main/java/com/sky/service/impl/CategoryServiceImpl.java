@@ -166,7 +166,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> list(Integer type) {
         LambdaQueryWrapper<Category> lqw=new LambdaQueryWrapper<>();
-        lqw.eq(Category::getType,type);
+        //你妈的因为没写type!=null,导致不传参数的话,返回零个数据,还以为是显示不了呢
+        lqw.eq(type!=null,Category::getType,type);
         return categoryMapper.selectList(lqw);
     }
 
