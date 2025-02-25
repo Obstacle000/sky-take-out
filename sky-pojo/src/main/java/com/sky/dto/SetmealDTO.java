@@ -1,5 +1,8 @@
 package com.sky.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.sky.entity.SetmealDish;
 import lombok.Data;
 import java.io.Serializable;
