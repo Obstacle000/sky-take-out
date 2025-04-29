@@ -86,14 +86,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setPassword(pwd);
 
         //设置记录时间和修改时间
-        employee.setCreateTime(LocalDateTime.now());
+       /* employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
-
+*/
         //设置当前记录创建人id和修改人id
         //由于没办法获取,暂时先写一个固定的值,后面会学新技术
-        Long currentId = BaseContext.getCurrentId();
+        /*ong currentId = BaseContext.getCurrentId();
         employee.setCreateUser(currentId);
-        employee.setUpdateUser(currentId);
+        employee.setUpdateUser(currentId);*/
 
         //插入用户
         employeeMapper.insert(employee);
@@ -133,9 +133,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .id(id)
                 .build();
 
-        // employee.setUpdateTime(LocalDateTime.now());
-        Long currentId = BaseContext.getCurrentId();
-        employee.setUpdateUser(currentId);
+        //employee.setUpdateTime(LocalDateTime.now());
+
+        //Long currentId = BaseContext.getCurrentId();
+        //employee.setUpdateUser(currentId);
 
         LambdaQueryWrapper<Employee> lqw=new LambdaQueryWrapper<Employee>();
         lqw.eq(Employee::getId,id);
@@ -168,8 +169,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         //注意1:由于BaseMapper的泛型是employee,所以得进行转换,用copy
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        //employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateUser(BaseContext.getCurrentId());
+
         //注意2:LambdaQueryWrapper的泛型不能写DTO了,不然最后update传递不了lqw
         LambdaQueryWrapper<Employee> lqw=new LambdaQueryWrapper<>();
         lqw.eq(Employee::getId,employee.getId());
