@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 @Mapper
+//mp是通过泛型名字来确定时哪一张表的
 public interface EmployeeMapper extends BaseMapper<Employee> {
 
     /**
