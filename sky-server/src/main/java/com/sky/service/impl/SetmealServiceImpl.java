@@ -42,10 +42,12 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 新增套餐，同时需要保存套餐和菜品的关联关系
+     *
      * @param setmealDTO
+     * @return
      */
     @Transactional
-    public void saveWithDish(SetmealDTO setmealDTO) {
+    public Long saveWithDish(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
 
@@ -53,6 +55,8 @@ public class SetmealServiceImpl implements SetmealService {
         setmealMapper.insert(setmeal);
 
         //获取生成的套餐id
+        //这里的 setmeal.getId() 能获取到自增主键，是因为 MyBatis-Plus 在执行 insert 方法时，
+        //会自动将数据库生成的自增主键回填到实体对象的 id 字段。
         Long setmealId = setmeal.getId();
 
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
@@ -62,6 +66,8 @@ public class SetmealServiceImpl implements SetmealService {
 
         //保存套餐和菜品的关联关系
         setmealDishMapper.insertBatch(setmealDishes);
+
+        return setmealId;
     }
 
     /**
