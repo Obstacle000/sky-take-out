@@ -1,5 +1,7 @@
 package com.sky.vo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.sky.entity.DishFlavor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,10 +33,13 @@ public class DishVO implements Serializable {
     //0 停售 1 起售
     private Integer status;
     //更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
     //分类名称
+    @TableField(exist = false)
     private String categoryName;
     //菜品关联的口味
+    @TableField(exist = false)
     private List<DishFlavor> flavors = new ArrayList<>();
 
     //private Integer copies;

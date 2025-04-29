@@ -88,6 +88,12 @@ public class CategoryController {
         categoryService.startOrStop(status,id);
         return Result.success();
     }
+    @ApiOperation("根据类型从查询分类")
+    @GetMapping("/list")
+    public Result<List<Category>> list(Integer type){
+        List<Category> list = categoryService.list(type);
+        return Result.success(list);
+    }
 
 
 }
